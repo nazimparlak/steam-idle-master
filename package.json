@@ -1,0 +1,80 @@
+{
+  "name": "steam",
+  "private": true,
+  "version": "0.0.16",
+  "description": "Desktop app for idling Steam games and tracking sessions.",
+  "author": "Nzmprlk",
+  "main": "electron/main.cjs",
+  "scripts": {
+    "dev": "vite",
+    "server": "node server.js",
+    "build": "vite build",
+    "build:ui": "vite build",
+    "electron:dev": "concurrently -k \"npm run server\" \"npm run dev\" \"wait-on http://localhost:5173 && electron .\"",
+    "gen:icon": "node scripts/gen-icon.mjs",
+    "dist:win": "npm run build:ui && node scripts/dist-win.mjs",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "axios": "^1.13.5",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "qrcode": "^1.5.4",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "steam-session": "^1.9.4",
+    "steam-totp": "^2.1.2",
+    "steam-user": "^5.3.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.1.1",
+    "concurrently": "^9.2.1",
+    "electron": "^37.2.5",
+    "electron-builder": "^26.0.16",
+    "eslint": "^9.39.1",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.4.24",
+    "globals": "^16.5.0",
+    "svg-to-ico": "^1.1.1",
+    "vite": "^7.3.1",
+    "wait-on": "^8.0.5"
+  },
+  "build": {
+    "appId": "com.nzmprlk.steamidler",
+    "productName": "Steam Idler",
+    "artifactName": "Steam-Idler-Setup-${version}.${ext}",
+    "directories": {
+      "output": "release/versions",
+      "buildResources": "build"
+    },
+    "icon": "build/icon.png",
+    "files": [
+      "dist/**",
+      "electron/**",
+      "server.js",
+      "steamidlelogo.png",
+      "package.json",
+      "package-lock.json",
+      "node_modules/**"
+    ],
+    "win": {
+      "icon": "build/icon.png",
+      "target": [
+        "nsis"
+      ]
+    },
+    "nsis": {
+      "multiLanguageInstaller": true,
+      "displayLanguageSelector": true,
+      "installerLanguages": [
+        "en_US",
+        "tr_TR"
+      ],
+      "deleteAppDataOnUninstall": true
+    }
+  }
+}
